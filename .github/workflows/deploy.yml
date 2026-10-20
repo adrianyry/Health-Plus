@@ -40,15 +40,15 @@ jobs:
           echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 -d > ~/.kube/config
           chmod 600 ~/.kube/config
 
-      - name: Set up Kubectl
-        uses: azure/setup-kubectl@v3
+      #- name: Set up Kubectl
+      #  uses: azure/setup-kubectl@v3
 
       # Configurează accesul la clusterul tău Kubernetes (folosind un kubeconfig salvat în secret)
-      - name: Configure Kubernetes Context
-        uses: azure/k8s-set-context@v4
-        with:
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
+      #- name: Configure Kubernetes Context
+      #  uses: azure/k8s-set-context@v4
+      #  with:
+      #    method: kubeconfig
+      #     kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
 
       # Aplică manifestele k8s din repo-ul de aplicație și forțează reînnoirea pod-ului
       - name: Apply Kubernetes Manifests & Restart
