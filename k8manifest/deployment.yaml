@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: health-plus
-        image: health-plus:latest
+        image: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/health-plus:latest # Sau pune direct numele tău de utilizator Docker Hubhealth-plus:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
