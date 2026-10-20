@@ -32,7 +32,7 @@ function Doctors() {
         />
         <DoctorCard
           img={profile2}
-          name="Dr. Jacob Jones"
+          name="Dr. Jacob Andrew"
           title="Hematologists"
           stars="4.8"
           reviews="700"
