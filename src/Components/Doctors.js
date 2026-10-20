@@ -46,7 +46,7 @@ function Doctors() {
         />
         <DoctorCard
           img={profile4}
-          name="Dr. Albert Flores"
+          name="Dr. Adrian Flores"
           title="Hematologists"
           stars="4.8"
           reviews="500"
