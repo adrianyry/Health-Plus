@@ -34,6 +34,12 @@ jobs:
             ${{ secrets.DOCKER_HUB_USERNAME }}/health-plus:latest
             ${{ secrets.DOCKER_HUB_USERNAME }}/health-plus:${{ github.sha }}
 
+      - name: Setup Kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+
       - name: Set up Kubectl
         uses: azure/setup-kubectl@v3
 
