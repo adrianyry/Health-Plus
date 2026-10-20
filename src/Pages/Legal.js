@@ -1,12 +1,8 @@
-import React from 'react';
+import React from "react";
+import LegalDocs from "../Components/LegalDocs";
 
 function Legal() {
-  return (
-    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
-      <h1>Termeni și Condiții (Legal)</h1>
-      <p>Informații legale pentru Health-Plus.</p>
-    </div>
-  );
+  return <LegalDocs />;
 }
 
 export default Legal;

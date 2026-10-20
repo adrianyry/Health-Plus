@@ -1,12 +1,8 @@
-import React from 'react';
+import React from "react";
+import AppointmentForm from "../Components/AppointmentForm";
 
 function Appointment() {
-  return (
-    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
-      <h1>Programări (Appointment)</h1>
-      <p>Aici poți face o programare medicală.</p>
-    </div>
-  );
+  return <AppointmentForm />;
 }
 
 export default Appointment;
