@@ -63,15 +63,30 @@ function Navbar() {
           </a>
         </li>
       </ul>
+      
+      <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+        <button
+          className="navbar-btn"
+          type="button"
+          disabled={isButtonDisabled}
+          onClick={handleChatBtnClick}
+        >
+          <FontAwesomeIcon icon={faCommentDots} /> Live Chat
+        </button>
 
-      <button
+        <Link to="/login" className="navbar-btn" style={{ textDecoration: "none", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          Login
+        </Link>
+      </div>
+
+      /* <button
         className="navbar-btn"
         type="button"
         disabled={isButtonDisabled}
         onClick={handleChatBtnClick}
       >
         <FontAwesomeIcon icon={faCommentDots} /> Live Chat
-      </button>
+      </button>*/ 
 
       {/* Mobile */}
       <div className={`mobile-navbar ${nav ? "open-nav" : ""}`}>

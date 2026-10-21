@@ -17,7 +17,7 @@ spec:
       containers:
       - name: health-plus
         image: adrianirimus/health-plus:latest # Sau pune direct numele tău de utilizator Docker Hubhealth-plus:latest
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
         volumeMounts:

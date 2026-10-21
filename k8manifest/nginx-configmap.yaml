@@ -11,7 +11,17 @@ data:
         root /usr/share/nginx/html;
         index index.html;
 
-        # Gestionarea rutelor pentru React SPA
+        # Proxy pentru Backend-ul Node.js/Express
+        location /api/ {
+            proxy_pass http://backend-service:5000;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'upgrade';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+        }
+
+        # Gestionarea rutelor pentru React SPA (trimite totul la index.html dacă fișierul nu există)
         location / {
             try_files $uri $uri/ /index.html;
         }
