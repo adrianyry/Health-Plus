@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vault
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault
+  namespace: vault
+  labels:
+    app: vault
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vault
+  template:
+    metadata:
+      labels:
+        app: vault
+    spec:
+      containers:
+      - name: vault
+        image: hashicorp/vault:latest
+        command: ["vault", "server", "-dev", "-dev-listen-address=0.0.0.0:8200"]
+        ports:
+        - containerPort: 8200
+          name: http
+        securityContext:
+          capabilities:
+            add: ["IPC_LOCK"]
+        env:
+          # ==========================================
+          # <--- MODIFICAT: Preluat din secretul extern creat prin kubectl, fără nicio valoare în clar în cod
+          - name: VAULT_DEV_ROOT_TOKEN_ID
+            valueFrom:
+              secretKeyRef:
+                name: vault-root-secret
+                key: VAULT_TOKEN
+          # ==========================================
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vault-service
+  namespace: vault
+spec:
+  selector:
+    app: vault
+  ports:
+    - protocol: TCP
+      port: 8200
+      targetPort: 8200
+  type: ClusterIP
