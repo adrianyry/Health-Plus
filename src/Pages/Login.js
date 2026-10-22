@@ -1,69 +1,98 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import "../Styles/Login.css";
+import React, { useState } from 'react';
+import axios from 'axios';
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    const endpoint = isRegistering ? '/api/register' : '/api/login';
+    const payload = isRegistering ? { email, password, name } : { email, password };
+
     try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        toast.success("Autentificare reușită!");
-        localStorage.setItem("token", data.token);
-        navigate("/");
+      const response = await axios.post(endpoint, payload);
+      
+      if (isRegistering) {
+        setSuccess('Cont creat cu succes! Acum te poți autentifica.');
+        setIsRegistering(false); // Comută automat înapoi la formularul de login
+        setPassword('');
       } else {
-        toast.error(data.message || "Eroare la autentificare!");
+        // Dacă login-ul reușește, salvează token-ul (dacă există) și redirecționează utilizatorul
+        if (response.data.token) {
+          localStorage.setItem('token', response.data.token);
+        }
+        window.location.href = '/'; 
       }
-    } catch (error) {
-      toast.error("Eroare de conexiune cu serverul!");
+    } catch (err) {
+      setError(err.response?.data?.error || 'A apărut o eroare. Încearcă din nou.');
     }
   };
 
   return (
-    <div className="login-container" style={{ maxWidth: "400px", margin: "80px auto", padding: "20px", boxShadow: "0 0 10px rgba(0,0,0,0.1)", borderRadius: "8px" }}>
-      <h2>Autentificare</h2>
-      <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "15px", marginTop: "20px" }}>
-        <div>
-          <label style={{ display: "block", marginBottom: "5px" }}>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
+    <div className="login-container" style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
+      <h2>{isRegistering ? 'Creează un cont nou' : 'Autentificare'}</h2>
+      
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {success && <p style={{ color: 'green' }}>{success}</p>}
+
+      <form onSubmit={handleSubmit}>
+        {isRegistering && (
+          <div style={{ marginBottom: '15px' }}>
+            <label style={{ display: 'block', marginBottom: '5px' }}>Nume:</label>
+            <input 
+              type="text" 
+              value={name} 
+              onChange={(e) => setName(e.target.value)} 
+              required 
+              style={{ width: '100%', padding: '8px' }}
+            />
+          </div>
+        )}
+        
+        <div style={{ marginBottom: '15px' }}>
+          <label style={{ display: 'block', marginBottom: '5px' }}>Email:</label>
+          <input 
+            type="email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            required 
+            style={{ width: '100%', padding: '8px' }}
           />
         </div>
-        <div>
-          <label style={{ display: "block", marginBottom: "5px" }}>Parolă:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
+
+        <div style={{ marginBottom: '15px' }}>
+          <label style={{ display: 'block', marginBottom: '5px' }}>Parolă:</label>
+          <input 
+            type="password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            required 
+            style={{ width: '100%', padding: '8px' }}
           />
         </div>
-        <button type="submit" style={{ padding: "10px", backgroundColor: "#1A8EFD", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>
-          Intră în cont
+
+        <button 
+          type="submit" 
+          style={{ width: '100%', padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+        >
+          {isRegistering ? 'Înregistrează-te' : 'Intră în cont'}
         </button>
       </form>
-      <p style={{ marginTop: "15px", textAlign: "center" }}>
-        <Link to="/">Înapoi la pagina principală</Link>
-      </p>
+
+      <button 
+        onClick={() => { setIsRegistering(!isRegistering); setError(''); setSuccess(''); }} 
+        style={{ width: '100%', marginTop: '10px', padding: '8px', background: 'none', border: 'none', color: '#007bff', cursor: 'pointer', textDecoration: 'underline' }}
+      >
+        {isRegistering ? 'Ai deja cont? Autentifică-te' : 'Nu ai cont? Înregistrează-te'}
+      </button>
     </div>
   );
 }

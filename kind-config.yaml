@@ -9,3 +9,6 @@ nodes:
   - containerPort: 443
     hostPort: 443
     protocol: TCP
+  extraMounts:
+  - hostPath: /mnt/d/PROJECTS/VOLTRONET/vault-storage
+    containerPath: /var/local/vault-storage

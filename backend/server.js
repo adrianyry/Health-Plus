@@ -67,3 +67,34 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Backend-ul rulează pe portul ${PORT}`);
 });
+
+// Endpoint pentru înregistrare
+app.post('/api/register', async (req, res) => {
+  try {
+    const { email, password, name } = req.body;
+    
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email-ul și parola sunt obligatorii!' });
+    }
+
+    // Criptarea parolei
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Inserarea în baza de date
+    const query = 'INSERT INTO users (email, password, name) VALUES ($1, $2, $3) RETURNING id, email, name';
+    const values = [email, hashedPassword, name || 'Utilizator'];
+    
+    const result = await pool.query(query, values);
+    
+    res.status(201).json({ 
+      message: 'Cont creat cu succes!', 
+      user: result.rows[0] 
+    });
+  } catch (err) {
+    console.error('Eroare la înregistrare:', err);
+    if (err.code === '23505') { // Codul PostgreSQL pentru duplicate key (email existent)
+      return res.status(400).json({ error: 'Acest email este deja folosit!' });
+    }
+    res.status(500).json({ error: 'Eroare internă de server' });
+  }
+});
