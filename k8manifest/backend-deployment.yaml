@@ -15,7 +15,6 @@ spec:
       containers:
       - name: backend
         image: adrianirimus/health-plus-backend:latest
-        #imagePullPolicy: Never # Folosește imaginea locală dacă ești pe Minikube/Docker Desktop
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
@@ -34,12 +33,16 @@ spec:
                 key: POSTGRES_PASSWORD
           - name: DB_NAME
             value: "health_plus_db"
-          # --- ADAUGĂ ACESTE LINII PENTRU VAULT ---
           - name: VAULT_ADDR
             value: "http://vault-service.vault.svc.cluster.local:8200"
+          # ==========================================
+          # <--- MODIFICAT: Preluat din secretul extern, curățat complet de valoarea în clar
           - name: VAULT_TOKEN
-            value: "myroottoken"
-          # ----------------------------------------
+            valueFrom:
+              secretKeyRef:
+                name: vault-token-secret
+                key: VAULT_TOKEN
+          # ==========================================
 
 ---
 apiVersion: v1
