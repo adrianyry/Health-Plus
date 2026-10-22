@@ -1,4 +1,22 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vault-config
+  namespace: vault
+data:
+  vault.hcl: |
+    ui = true
+    listener "tcp" {
+      address = "0.0.0.0:8200"
+      tls_disable = 1
+    }
+    storage "file" {
+      path = "/vault/data"
+      disable_lock = true
+    }
+    disable_mlock = true
+---
+apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: vault-pv
@@ -60,14 +78,19 @@ spec:
           ports:
             - containerPort: 8200
               name: http
-          command: ["vault", "server", "-dev", "-dev-listen-address=0.0.0.0:8200", "-dev-root-token-id=myroottoken"]
+          command: ["vault", "server", "-config=/vault/config/vault.hcl"]
           securityContext:
             capabilities:
               add: ["IPC_LOCK"]
           volumeMounts:
             - name: vault-data
               mountPath: /vault/data
+            - name: vault-config
+              mountPath: /vault/config
       volumes:
         - name: vault-data
           persistentVolumeClaim:
             claimName: vault-pvc
+        - name: vault-config
+          configMap:
+            name: vault-config

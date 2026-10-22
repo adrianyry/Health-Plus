@@ -10,5 +10,5 @@ nodes:
     hostPort: 443
     protocol: TCP
   extraMounts:
-  - hostPath: /mnt/d/PROJECTS/VOLTRONET/vault-storage
+  - hostPath: /home/adrian/vault-storage
     containerPath: /var/local/vault-storage
