@@ -1,10 +1,27 @@
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+  labels:
+    app: postgres
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /mnt/d/PROJECTS/VOLTRONET/postgres-data
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: postgres-pvc
   labels:
     app: postgres
 spec:
+  storageClassName: ""  # Dezactivează provisionerul dinamic
+  volumeName: postgres-pv # Forțează legătura directă cu PV-ul tău
   accessModes:
     - ReadWriteOnce
   resources:

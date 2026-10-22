@@ -124,3 +124,17 @@
         display: block;
     }
 }
+
+/* Fix pentru vizibilitatea butoanelor pe ecrane sub 900px */
+@media screen and (max-width: 900px) {
+    .navbar-section div[style*="display: flex"] {
+        display: none !important;
+    }
+}
+
+/* Fix pentru vizibilitatea butoanelor pe ecrane sub 900px */
+@media screen and (max-width: 900px) {
+    .navbar-section div[style*="display: flex"] {
+        display: none !important;
+    }
+}

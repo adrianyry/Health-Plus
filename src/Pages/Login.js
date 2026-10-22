@@ -1,8 +1,7 @@
-cat << 'EOF' > src/Pages/Login.js
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import "../Styles/Login.css"; // Opțional, poți folosi stilurile existente
+import "../Styles/Login.css";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -14,47 +13,55 @@ function Login() {
     try {
       const response = await fetch("/api/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ email, password }),
       });
+
       const data = await response.json();
+
       if (response.ok) {
-        toast.success(`Bun venit, ${data.user.name}!`);
+        toast.success("Autentificare reușită!");
         localStorage.setItem("token", data.token);
         navigate("/");
       } else {
-        toast.error(data.message || "Eroare la autentificare");
+        toast.error(data.message || "Eroare la autentificare!");
       }
-    } catch (err) {
-      toast.error("Eroare de conexiune cu serverul.");
+    } catch (error) {
+      toast.error("Eroare de conexiune cu serverul!");
     }
   };
 
   return (
-    <div className="login-section" style={{ padding: "120px 20px", textAlign: "center" }}>
-      <h2>Autentificare Doctor / Admin</h2>
-      <form onSubmit={handleLogin} style={{ maxWidth: "400px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "15px" }}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={{ padding: "10px", fontSize: "16px" }}
-        />
-        <input
-          type="password"
-          placeholder="Parolă"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={{ padding: "10px", fontSize: "16px" }}
-        />
-        <button type="submit" className="text-appointment-btn" style={{ padding: "10px", cursor: "pointer" }}>
+    <div className="login-container" style={{ maxWidth: "400px", margin: "80px auto", padding: "20px", boxShadow: "0 0 10px rgba(0,0,0,0.1)", borderRadius: "8px" }}>
+      <h2>Autentificare</h2>
+      <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "15px", marginTop: "20px" }}>
+        <div>
+          <label style={{ display: "block", marginBottom: "5px" }}>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
+          />
+        </div>
+        <div>
+          <label style={{ display: "block", marginBottom: "5px" }}>Parolă:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
+          />
+        </div>
+        <button type="submit" style={{ padding: "10px", backgroundColor: "#1A8EFD", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>
           Intră în cont
         </button>
       </form>
-      <p style={{ marginTop: "15px" }}>
+      <p style={{ marginTop: "15px", textAlign: "center" }}>
         <Link to="/">Înapoi la pagina principală</Link>
       </p>
     </div>
@@ -62,4 +69,3 @@ function Login() {
 }
 
 export default Login;
-EOF

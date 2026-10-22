@@ -63,7 +63,8 @@ function Navbar() {
           </a>
         </li>
       </ul>
-      
+
+      {/* Butoanele de pe Desktop (Live Chat + Login) */}
       <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
         <button
           className="navbar-btn"
@@ -78,15 +79,6 @@ function Navbar() {
           Login
         </Link>
       </div>
-
-      /* <button
-        className="navbar-btn"
-        type="button"
-        disabled={isButtonDisabled}
-        onClick={handleChatBtnClick}
-      >
-        <FontAwesomeIcon icon={faCommentDots} /> Live Chat
-      </button>*/ 
 
       {/* Mobile */}
       <div className={`mobile-navbar ${nav ? "open-nav" : ""}`}>
@@ -124,6 +116,11 @@ function Navbar() {
             <a onClick={openNav} href="#contact">
               Contact
             </a>
+          </li>
+          <li>
+            <Link onClick={openNav} to="/login">
+              Login
+            </Link>
           </li>
         </ul>
       </div>

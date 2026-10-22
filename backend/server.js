@@ -33,8 +33,8 @@ app.post('/api/login', async (req, res) => {
     // Pentru test, dacă parolele din DB nu au fost criptate cu bcrypt, 
     // poți face o verificare simplă sau folosi bcrypt.compare
     // (Presupunând că ai pus un hash sau parola direct, ajustează după caz)
-    const isPasswordValid = password === user.password_hash || await bcrypt.compare(password, user.password_hash);
-
+    //const isPasswordValid = password === user.password_hash || await bcrypt.compare(password, user.password_hash);
+    const isPasswordValid = password === user.password || await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Email sau parolă incorectă' });
     }
