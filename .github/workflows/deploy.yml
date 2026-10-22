@@ -49,7 +49,7 @@ jobs:
       - name: Export Fresh Kubeconfig from Kind
         run: |
           mkdir -p ~/.kube
-          kind get kubeconfig --name floci-cluster > ~/.kube/config
+          kind get kubeconfig --name kind > ~/.kube/config
           chmod 600 ~/.kube/config
       #- name: Setup Kubeconfig
       #  run: |
