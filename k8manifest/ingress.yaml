@@ -22,6 +22,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: ecommerce-service  # Sau frontend-service, în funcție de cum ai numit serviciul frontend
+            name: frontend-service  # Sau frontend-service, în funcție de cum ai numit serviciul frontend
             port:
               number: 80
