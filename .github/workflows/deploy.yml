@@ -55,8 +55,8 @@ jobs:
       # Aplică manifestele Kubernetes și forțează reînnoirea pod-urilor
       - name: Apply Kubernetes Manifests & Restart
         run: |
+          kubectl apply -f vault
           kubectl apply -f k8manifest/
-          
           # Forțează rularea noilor imagini pe ambele deployment-uri
           kubectl rollout restart deployment/backend-deployment
           kubectl rollout restart deployment/frontend-deployment
