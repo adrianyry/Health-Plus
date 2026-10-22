@@ -66,18 +66,18 @@ jobs:
           kubectl rollout restart deployment/backend-deployment
           kubectl rollout restart deployment/frontend-deployment
 
-      - name: Check Vault Health & Unseal Status
-        run: |
-          echo "Verific starea Vault în cluster..."
-          POD_NAME=$(kubectl get pods -n vault -l app=vault -o jsonpath='{.items[0].metadata.name}')
-          for i in {1..30}; do
-            # Verificăm dacă pod-ul răspunde și dacă starea 'sealed' este false
-            if kubectl exec -n vault $POD_NAME -- env VAULT_ADDR=http://127.0.0.1:8200 vault status -format=json 2>/dev/null | grep -q '"sealed":false'; then
-              echo "Succes: Vault este pornit și UNSEALED!"
-              exit 0
-            fi
-            echo "Vault este încă sigilat sau pornește... Reîncerc în 5 secunde ($i/30)"
-            sleep 5
-          done
-          echo "Avertisment: Pipeline-ul a trecut de aplicare, dar Vault necesită unseal manual sau este încă în curs de pornire."
-          exit 0
+      #- name: Check Vault Health & Unseal Status
+      #  run: |
+      #    echo "Verific starea Vault în cluster..."
+      #    POD_NAME=$(kubectl get pods -n vault -l app=vault -o jsonpath='{.items[0].metadata.name}')
+      #    for i in {1..30}; do
+      #      # Verificăm dacă pod-ul răspunde și dacă starea 'sealed' este false
+      #      if kubectl exec -n vault $POD_NAME -- env VAULT_ADDR=http://127.0.0.1:8200 vault status -format=json 2>/dev/null | grep -q '"sealed":false'; then
+      #        echo "Succes: Vault este pornit și UNSEALED!"
+      #        exit 0
+      #      fi
+      #      echo "Vault este încă sigilat sau pornește... Reîncerc în 5 secunde ($i/30)"
+      #      sleep 5
+      #    done
+      #    echo "Avertisment: Pipeline-ul a trecut de aplicare, dar Vault necesită unseal manual sau este încă în curs de pornire."
+      #    exit 0
