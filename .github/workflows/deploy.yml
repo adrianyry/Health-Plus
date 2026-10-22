@@ -46,11 +46,16 @@ jobs:
             adrianirimus/health-plus-frontend:${{ github.sha }}
 
       # Configurează accesul la Kubernetes folosind secretul KUBE_CONFIG_DATA
-      - name: Setup Kubeconfig
+      - name: Export Fresh Kubeconfig from Kind
         run: |
           mkdir -p ~/.kube
-          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 -d > ~/.kube/config
+          kind get kubeconfig --name floci-cluster > ~/.kube/config
           chmod 600 ~/.kube/config
+      #- name: Setup Kubeconfig
+      #  run: |
+      #    mkdir -p ~/.kube
+      #    echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 -d > ~/.kube/config
+      #    chmod 600 ~/.kube/config
 
       # Aplică manifestele Kubernetes și forțează reînnoirea pod-urilor
       - name: Apply Kubernetes Manifests & Restart
