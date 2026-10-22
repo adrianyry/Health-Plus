@@ -14,9 +14,9 @@ spec:
     spec:
       containers:
       - name: backend
-        image: health-plus-backend:latest
+        image: adrianirimus/health-plus-backend:latest
         #imagePullPolicy: Never # Folosește imaginea locală dacă ești pe Minikube/Docker Desktop
-        imagePullPolicy: Never
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
         env:

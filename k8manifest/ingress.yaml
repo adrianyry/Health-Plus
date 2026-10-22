@@ -8,10 +8,20 @@ spec:
   - host: health-plus.local
     http:
       paths:
+      # 1. Rutele pentru API (Backend) - merg spre backend-service pe portul 5000
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-service
+            port:
+              number: 5000
+
+      # 2. Rutele pentru Frontend (React) - merg spre serviciul de frontend pe portul 80
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: ecommerce-service
+            name: ecommerce-service  # Sau frontend-service, în funcție de cum ai numit serviciul frontend
             port:
               number: 80

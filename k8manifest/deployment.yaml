@@ -16,12 +16,11 @@ spec:
     spec:
       containers:
       - name: health-plus
-        #image: adrianirimus/health-plus:latest # Sau pune direct numele tău de utilizator Docker Hubhealth-plus:latest
-        image: health-plus-frontend:latest
-        imagePullPolicy: IfNotPresent
+        # Folosim imaginea oficială urcată pe Docker Hub de pipeline-ul tău
+        image: adrianirimus/health-plus-frontend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
-        # --- ADAUGĂ ACESTE LINII ---
         livenessProbe:
           httpGet:
             path: /
@@ -34,7 +33,6 @@ spec:
             port: 80
           initialDelaySeconds: 5
           periodSeconds: 5
-        # ---------------------------
         volumeMounts:
         - name: nginx-config-volume
           mountPath: /etc/nginx/conf.d
