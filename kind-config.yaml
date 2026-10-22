@@ -12,3 +12,5 @@ nodes:
   extraMounts:
   - hostPath: /home/adrian/vault-storage
     containerPath: /var/local/vault-storage
+  - hostPath: /home/adrian/postgres-storage
+    containerPath: /var/local/postgres-storage

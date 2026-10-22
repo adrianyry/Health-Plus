@@ -11,7 +11,7 @@ spec:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   hostPath:
-    path: /mnt/d/PROJECTS/VOLTRONET/postgres-data
+    path: /var/local/postgres-storage
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -20,8 +20,8 @@ metadata:
   labels:
     app: postgres
 spec:
-  storageClassName: ""  # Dezactivează provisionerul dinamic
-  volumeName: postgres-pv # Forțează legătura directă cu PV-ul tău
+  storageClassName: ""
+  volumeName: postgres-pv
   accessModes:
     - ReadWriteOnce
   resources:
