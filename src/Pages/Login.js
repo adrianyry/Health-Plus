@@ -29,7 +29,12 @@ function Login() {
         if (response.data.token) {
           localStorage.setItem('token', response.data.token);
         }
-        window.location.href = '/'; 
+	setSuccess('Autentificare reușită! Se redirecționează...');
+	// Redirecționează după 1 secundă pentru a lăsa utilizatorul să vadă mesajul
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1000);
+        //window.location.href = '/';
       }
     } catch (err) {
       setError(err.response?.data?.error || 'A apărut o eroare. Încearcă din nou.');
