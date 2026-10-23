@@ -98,3 +98,16 @@ app.post('/api/register', async (req, res) => {
     res.status(500).json({ error: 'Eroare internă de server' });
   }
 });
+// NOU: Endpoint pentru adăugarea programărilor
+app.post('/api/appointments', async (req, res) => {
+  const { patientName, phone, gender, appointmentTime, mode } = req.body;
+  try {
+    const query = `INSERT INTO appointments (patient_name, phone, gender, appointment_time, mode) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
+    const values = [patientName, phone, gender, appointmentTime, mode];
+    const result = await pool.query(query, values);
+    res.status(201).json({ success: true, appointment: result.rows[0] });
+  } catch (err) {
+    console.error('Eroare la salvarea programării:', err);
+    res.status(500).json({ error: 'Eroare la salvarea programării în baza de date.' });
+  }
+});
