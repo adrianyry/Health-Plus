@@ -6,7 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 function AppointmentForm() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  });
+  }, []);
 
   const [patientName, setPatientName] = useState("");
   const [patientNumber, setPatientNumber] = useState("");
@@ -16,7 +16,7 @@ function AppointmentForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formErrors, setFormErrors] = useState({});
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate form inputs
@@ -54,19 +54,42 @@ function AppointmentForm() {
       return;
     }
 
-    // Reset form fields and errors after successful submission
-    setPatientName("");
-    setPatientNumber("");
-    setPatientGender("default");
-    setAppointmentTime("");
-    setPreferredMode("default");
-    setFormErrors({});
+    try {
+      const response = await fetch("/api/appointments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          patient_name: patientName,
+          phone: patientNumber,
+          gender: patientGender,
+          appointment_time: appointmentTime,
+          mode: preferredMode,
+        }),
+      });
 
-    toast.success("Appointment Scheduled !", {
-      position: toast.POSITION.TOP_CENTER,
-      onOpen: () => setIsSubmitted(true),
-      onClose: () => setIsSubmitted(false),
-    });
+      if (!response.ok) {
+        throw new Error("Eroare la salvarea programării pe server.");
+      }
+
+      // Reset form fields and errors after successful submission
+      setPatientName("");
+      setPatientNumber("");
+      setPatientGender("default");
+      setAppointmentTime("");
+      setPreferredMode("default");
+      setFormErrors({});
+
+      toast.success("Appointment Scheduled !", {
+        position: toast.POSITION.TOP_CENTER,
+        onOpen: () => setIsSubmitted(true),
+        onClose: () => setIsSubmitted(false),
+      });
+    } catch (error) {
+      console.error("Eroare:", error);
+      toast.error("Nu s-a putut salva programarea. Încearcă din nou.");
+    }
   };
 
   return (

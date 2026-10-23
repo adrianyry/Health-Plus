@@ -14,19 +14,19 @@ spec:
         app: backend
     spec:
       # --- INIT CONTAINERS: Forțează backend-ul să aștepte pornirea Vault ---
-      initContainers:
-        - name: wait-for-vault
-          image: alpine:latest
-          command:
-            - 'sh'
-            - '-c'
-            - |
-              echo "Așteptăm ca Vault să pornească..."
-              until wget -qO- http://vault-service-cluster.local:8200/v1/sys/health > /dev/null 2>&1; do
-                echo "Vault nu este gata, reîncercăm în 2 secunde..."
-                sleep 2
-              done
-              echo "Vault a pornit cu succes!"
+      #initContainers:
+      #  - name: wait-for-vault
+      #    image: alpine:latest
+      #    command:
+      #      - 'sh'
+      #      - '-c'
+      #      - |
+      #        echo "Așteptăm ca Vault să pornească..."
+      #        until wget -qO- http://vault-service-cluster.local:8200/v1/sys/health > /dev/null 2>&1; do
+      #          echo "Vault nu este gata, reîncercăm în 2 secunde..."
+      #          sleep 2
+      #       done
+      #        echo "Vault a pornit cu succes!"
       containers:
       - name: backend
         image: adrianirimus/health-plus-backend:latest
