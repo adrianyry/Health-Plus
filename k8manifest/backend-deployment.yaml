@@ -22,7 +22,7 @@ spec:
             - '-c'
             - |
               echo "Așteptăm ca Vault să pornească..."
-              until wget -qO- http://vault-service.vault.svc.cluster.local:8200/v1/sys/health > /dev/null 2>&1; do
+              until wget -qO- http://vault-service-cluster.local:8200/v1/sys/health > /dev/null 2>&1; do
                 echo "Vault nu este gata, reîncercăm în 2 secunde..."
                 sleep 2
               done
@@ -49,7 +49,7 @@ spec:
           - name: DB_NAME
             value: "health_plus_db"
           - name: VAULT_ADDR
-            value: "http://vault-service.vault.svc.cluster.local:8200"
+            value: "http://vault-service-cluster.local:8200"
           - name: VAULT_TOKEN
             valueFrom:
               secretKeyRef:
