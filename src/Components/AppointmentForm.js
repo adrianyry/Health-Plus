@@ -54,6 +54,7 @@ function AppointmentForm() {
       return;
     }
 
+    // AICI LIPASEA APELUL CĂTRE BACKEND:
     try {
       const response = await fetch("/api/appointments", {
         method: "POST",
@@ -61,10 +62,10 @@ function AppointmentForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          patient_name: patientName,
+          patientName: patientName,
           phone: patientNumber,
           gender: patientGender,
-          appointment_time: appointmentTime,
+          appointmentTime: appointmentTime,
           mode: preferredMode,
         }),
       });
@@ -72,6 +73,25 @@ function AppointmentForm() {
       if (!response.ok) {
         throw new Error("Eroare la salvarea programării pe server.");
       }
+
+      // Reset form fields and errors after successful submission
+      setPatientName("");
+      setPatientNumber("");
+      setPatientGender("default");
+      setAppointmentTime("");
+      setPreferredMode("default");
+      setFormErrors({});
+
+      toast.success("Appointment Scheduled !", {
+        position: toast.POSITION.TOP_CENTER,
+        onOpen: () => setIsSubmitted(true),
+        onClose: () => setIsSubmitted(false),
+      });
+    } catch (error) {
+      console.error("Eroare:", error);
+      toast.error("Nu s-a putut salva programarea. Încearcă din nou.");
+    }
+  };
 
       // Reset form fields and errors after successful submission
       setPatientName("");
