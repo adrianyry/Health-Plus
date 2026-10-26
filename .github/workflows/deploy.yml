@@ -21,6 +21,7 @@ jobs:
 
   build-and-deploy:
     name: Build & Push All Images & Deploy to K8s
+    needs: build
     runs-on: self-hosted
     steps:
       - name: Checkout Code
