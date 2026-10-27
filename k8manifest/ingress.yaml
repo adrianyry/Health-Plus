@@ -5,7 +5,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: health-plus.local
+  - host: health-plus.test
     http:
       paths:
       # 1. Rutele pentru API (Backend) - merg spre backend-service pe portul 5000

@@ -55,6 +55,14 @@ spec:
               secretKeyRef:
                 name: vault-token-secret
                 key: VAULT_TOKEN
+          - name: AWS_ENDPOINT_URL
+            value: "http://host.docker.internal:4566"
+          - name: AWS_ACCESS_KEY_ID
+            value: "test"
+          - name: AWS_SECRET_ACCESS_KEY
+            value: "test"
+          - name: AWS_REGION
+            value: "eu-central-1"
 
 ---
 apiVersion: v1
