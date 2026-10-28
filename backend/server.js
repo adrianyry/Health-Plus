@@ -64,6 +64,10 @@ app.post('/api/login', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
+// Endpoint de Health Check pentru Kubernetes
+app.get('/', (req, res) => {
+  res.status(200).json({ status: 'UP', message: 'Backend is healthy!' });
+});
 app.listen(PORT, () => {
   console.log(`Backend-ul rulează pe portul ${PORT}`);
 });

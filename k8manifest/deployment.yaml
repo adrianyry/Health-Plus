@@ -16,11 +16,19 @@ spec:
     spec:
       containers:
       - name: health-plus
-        # Folosim imaginea oficială urcată pe Docker Hub de pipeline-ul tău
         image: adrianirimus/health-plus-frontend:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
+        # --- ADAUGAT: Secțiunea de resurse ---
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+        # ------------------------------------
         livenessProbe:
           httpGet:
             path: /

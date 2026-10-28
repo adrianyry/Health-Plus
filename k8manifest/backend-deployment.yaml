@@ -33,6 +33,17 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
+        # ==========================================
+        # --- ADAUGAT: Resurse (Requests & Limits) ---
+        # ==========================================
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        # ==========================================
         env:
           - name: DB_HOST
             value: "postgres-service"
@@ -69,13 +80,13 @@ spec:
 # --- HEALTH PROBES ---
         livenessProbe:
           httpGet:
-            path: /health  # Ajustează ruta dacă endpoint-ul tău de health difere (ex: /api/health)
+            path: /  # Ajustează ruta dacă endpoint-ul tău de health difere (ex: /api/health)
             port: 5000
           initialDelaySeconds: 30
           periodSeconds: 10
         readinessProbe:
           httpGet:
-            path: /health
+            path: /
             port: 5000
           initialDelaySeconds: 15
           periodSeconds: 5
