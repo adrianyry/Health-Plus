@@ -65,7 +65,12 @@ app.post('/api/login', async (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 // Endpoint de Health Check pentru Kubernetes
+// Endpoint de Health Check cu prefixul /api (pentru testare prin curl/browser)
 app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'UP', message: 'API is healthy!' });
+});
+
+app.get('/', (req, res) => {
   res.status(200).json({ status: 'UP', message: 'Backend is healthy!' });
 });
 app.listen(PORT, () => {
