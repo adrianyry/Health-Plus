@@ -5,10 +5,10 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: health-plus.test
+  - host: voltronet.go.ro
     http:
       paths:
-      # 1. Rutele pentru API (Backend) - merg spre backend-service pe portul 5000
+      # 1. Rutele pentru API (Backend) - merg direct spre backend pe portul 5000
       - path: /api
         pathType: Prefix
         backend:
@@ -17,11 +17,29 @@ spec:
             port:
               number: 5000
 
-      # 2. Rutele pentru Frontend (React) - merg spre serviciul de frontend pe portul 80
+      # 2. Rutele pentru Frontend (React) - merg spre frontend pe portul 80
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: frontend-service  # Sau frontend-service, în funcție de cum ai numit serviciul frontend
+            name: frontend-service
+            port:
+              number: 80
+
+  # Regula fallback pentru acces direct prin IP sau localhost fără host definit
+  - http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-service
+            port:
+              number: 5000
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
             port:
               number: 80
