@@ -4,10 +4,29 @@ metadata:
   name: health-plus-ingress
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - voltronet.go.ro
+    secretName: voltronet-tls-secret
   rules:
   - host: voltronet.go.ro
     http:
       paths:
+      # 1. Rute Strapi: Profiluri Doctori & Admin Panel CMS
+      - path: /api/doctors
+        pathType: Prefix
+        backend:
+          service:
+            name: strapi-service
+            port:
+              number: 1337
+      - path: /dashboard # Panoul de administrare Strapi
+        pathType: Prefix
+        backend:
+          service:
+            name: strapi-service
+            port:
+              number: 1337
       # 1. Rutele pentru API (Backend) - merg direct spre backend pe portul 5000
       - path: /api
         pathType: Prefix
